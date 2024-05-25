@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Sms" ALTER COLUMN "number" SET DATA TYPE TEXT;
