@@ -5,6 +5,7 @@ import axios from 'axios';
 import { API_ACCESS_TOKEN, API_GATEWAY, API_URL } from 'consts/sms-api-options';
 import { SendDto } from './dto/send.dto';
 import { MultipleSendDto } from './dto/send.multiple';
+import { DeleteDto } from './dto/delete.dto';
 @Injectable()
 export class SmsRepository {
   constructor(private prismaService: PrismaService) {}
@@ -106,5 +107,19 @@ export class SmsRepository {
         sender: true,
       },
     });
+  }
+
+  async remove(data: DeleteDto) {
+    const removed = [];
+    data.ids.map((i: string) => {
+      this.remover(i);
+      removed.push(i);
+    });
+
+    return removed;
+  }
+
+  async remover(id: string) {
+    return await this.prismaService.sms.delete({ where: { id } });
   }
 }

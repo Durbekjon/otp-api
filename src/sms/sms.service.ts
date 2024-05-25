@@ -5,6 +5,7 @@ import { SendDto } from './dto/send.dto';
 import { StatusResponseDto } from 'src/core/responses/status-response.dto';
 import { SmsDto } from './dto/sms.dto';
 import { MultipleSendDto } from './dto/send.multiple';
+import { DeleteDto } from './dto/delete.dto';
 
 @Injectable()
 export class SmsService {
@@ -43,6 +44,21 @@ export class SmsService {
     return {
       status: 'OK',
       results: sms,
+    };
+  }
+
+  async remove(data: DeleteDto, user: IUser) {
+    const checkUser = await this.smsRepository.checkUser(user);
+
+    if (!checkUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const deletedSms = await this.smsRepository.remove(data);
+
+    return {
+      status: 'OK',
+      results: deletedSms,
     };
   }
 }

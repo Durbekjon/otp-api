@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Req,
@@ -15,6 +16,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { StatusResponseDto } from 'src/core/responses/status-response.dto';
 import { SmsDto } from './dto/sms.dto';
 import { MultipleSendDto } from './dto/send.multiple';
+import { DeleteDto } from './dto/delete.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('sms')
@@ -61,5 +63,17 @@ export class SmsController {
   getMySMS(@Req() req: Request & { user: IUser }) {
     const user = req.user;
     return this.smsService.get(user);
+  }
+
+  @ApiOperation({ summary: 'Delete multiple sms' })
+  @ApiBearerAuth('access-token')
+  @ApiResponse({
+    type: () => StatusResponseDto,
+  })
+  @Version('1')
+  @Delete()
+  remove(@Body() data: DeleteDto, @Req() req: Request & { user: IUser }) {
+    const user = req.user;
+    return this.smsService.remove(data, user);
   }
 }
