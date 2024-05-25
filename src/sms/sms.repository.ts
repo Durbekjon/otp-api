@@ -21,19 +21,6 @@ export class SmsRepository {
     return user;
   }
 
-  async checkKey(user: IUser, key: string) {
-    const thisUser = await this.prismaService.user.findUnique({
-      where: { id: user.id },
-      include: { key: true },
-    });
-
-    if (key !== thisUser.key.id) {
-      return false;
-    }
-
-    return true;
-  }
-
   async newSMS(data: SendDto, user: IUser) {
     await this.send(data.number, data.message);
     return await this.prismaService.sms.create({

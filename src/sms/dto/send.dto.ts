@@ -10,12 +10,4 @@ export class SendDto {
   @IsNotEmpty()
   @IsString()
   message: string;
-
-  @ApiProperty({
-    description: 'Your API KEY',
-    example: 'e037dc21-9c23-4b56-a565-a1b480e3d1b9',
-  })
-  @IsNotEmpty()
-  @IsString()
-  key: string;
 }

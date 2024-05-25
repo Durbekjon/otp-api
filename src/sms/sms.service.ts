@@ -20,12 +20,6 @@ export class SmsService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    const checkKey = await this.smsRepository.checkKey(user, data.key);
-
-    if (!checkKey) {
-      throw new HttpException('Invalid key', HttpStatus.FORBIDDEN);
-    }
-
     const newSms = await this.smsRepository.newSMS(data, user);
 
     return {
